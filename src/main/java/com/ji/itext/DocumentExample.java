@@ -2,6 +2,7 @@ package com.ji.itext;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
@@ -13,6 +14,7 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
@@ -44,8 +46,26 @@ import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 public class DocumentExample {
 
 	private static String FILE_DIR = "E:\\itext\\doc\\";
+	
 
+	private static  BaseFont bfChinese = null;
+	
+	private static Font fontZH =  null;	
+	static{
+		try {
+			//中文支持
+			bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+			fontZH =  new Font(bfChinese, 12, Font.NORMAL);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+	
 	public static void main(String[] args) {
+		
+		
 		
 		File f = new File(FILE_DIR);
 		if (!f.isDirectory()) {
@@ -55,6 +75,7 @@ public class DocumentExample {
 		DocumentExample d = new DocumentExample();
 
 		try {
+			
 			//生成一个PDF
 			d.createSamplePDF();
 			
@@ -236,9 +257,9 @@ public class DocumentExample {
 		over.beginText();
 		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI,
 				BaseFont.EMBEDDED);
-		over.setFontAndSize(bf, 18);
+		over.setFontAndSize(bfChinese, 18);
 		over.setTextMatrix(30, 30);
-		over.showTextAligned(Element.ALIGN_LEFT, "DUPLICATE", 230, 430, 45);
+		over.showTextAligned(Element.ALIGN_LEFT, "测试测试测试", 230, 430, 45);
 		over.endText();
 		
 		//背景图
